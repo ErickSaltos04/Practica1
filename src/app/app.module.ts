@@ -5,8 +5,10 @@ import { AppComponent } from './app.component';
 import { InicioComponent } from './Pages/inicio/inicio.component';
 import { LoadingComponent } from './Components/loading/loading.component';
 import { ButtonModule } from 'primeng/button';
-import{AppRoutingModule} from './app-routing.module';
+import { TableModule } from 'primeng/table'; 
+import { AppRoutingModule } from './app-routing.module';
 import { PaginaTablaComponent } from './Pages/pagina-tabla/pagina-tabla.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { PaginaTablaComponent } from './Pages/pagina-tabla/pagina-tabla.componen
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ButtonModule
+    ButtonModule,
+    HttpClientModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
