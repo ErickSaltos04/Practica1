@@ -1,44 +1,41 @@
 import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
-import { IDataEmpleado, iEmpleados } from 'src/app/interfaces/empleadosInterfaces';
+import { Route, Router, RouterLink } from '@angular/router';
+import { IDataEmpleado } from 'src/app/interfaces/empleadosInterfaces';
 import { EmpleadoService } from 'src/app/services/empleado.service';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-pagina-tabla',
   templateUrl: './pagina-tabla.component.html',
   styleUrls: ['./pagina-tabla.component.css']
+  
 })
 export class PaginaTablaComponent implements OnInit {
   listEmpleado: IDataEmpleado[] = [];
   columnTabla: any;
-  listMenu: MenuItem[] =[];
-  activeItem!: MenuItem;
+  loading =false;
+  
   constructor(private ruta: Router,
-    private empleadoService: EmpleadoService){
+    private empleadoService: EmpleadoService,
+    private mensajes: MessageService){
 
   }
   ngOnInit(): void {
     this.iniColumnaTabla();
-    this.inicioMenu();
+    
     console.log('Hola estoy aqui');
-    //this.empleadoService.getAllEmployee().subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //     this.listEmpleado = res.data;
-    //   }, (error) => {
-    //     console.log(error);
-    //   }
-    // );
-
+    this.loading=true;
     this.empleadoService.getAllEmployee().subscribe(
       {
         next: (res) => {
           console.log(res);
         this.listEmpleado = res.data;
+        this.loading=false;
+        this.mensajes.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Exito' });
         },
         error: (err) => {
           console.log(err);
+          this.loading=false;
+          this.mensajes.add({ severity: 'error', summary: 'Error', detail: 'Hubo un problema' });
         }
       }
     );
@@ -61,17 +58,7 @@ export class PaginaTablaComponent implements OnInit {
     ];
   }
 
-  inicioMenu(){
-    this.listMenu = [
-      {
-        label: 'CLiente'
-      },
-      {
-        label: 'Empresa'
-      }
-    ];
-    this.activeItem= this.listMenu[0];
-  }
+  
   regresarInicio( ){
     this.ruta.navigate(['inicio']);
   }
